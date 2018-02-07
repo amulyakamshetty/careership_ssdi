@@ -1,0 +1,88 @@
+DROP DATABASE VJF;
+
+CREATE DATABASE VJF;
+
+USE VJF;
+
+CREATE TABLE JobSeeker_login (
+    email varchar(64),
+    password varchar(15), 
+    first_name varchar(30), 
+    middle_name varchar(30), 
+    last_name varchar(30), 
+    PRIMARY KEY (email)
+);
+
+CREATE TABLE Employer_login (
+    email varchar(64),
+    password varchar(15), 
+    company_name varchar(50), 
+    phone int not null, 
+    PRIMARY KEY (email)
+);
+
+CREATE TABLE Employer_Job_POST (
+    job_post_id int NOT NULL AUTO_INCREMENT,
+    job_desc varchar(100), 
+    job_title varchar(50), 
+    job_location varchar(50),
+    job_post_email varchar(64),
+    PRIMARY KEY (job_post_id),
+    FOREIGN KEY (job_post_email) REFERENCES Employer_login(email)
+
+);
+
+
+CREATE TABLE JobSeeker_Biodata (
+    first_name varchar(30), 
+    last_name varchar(30),
+    jobseeker_email varchar(30),
+    phone BIGINT not null, 
+    school varchar(50),
+    degree varchar(50),
+    study_field varchar(50),
+    sfrom_DATEMonth varchar(20),
+    sfrom_DATEyear varchar(20), 
+	sto_DATEMonth varchar(20),
+    sto_DATEyear varchar(20), 
+job_title varchar(40),
+    job_company varchar(50),
+    job_country  varchar(50),
+	job_city  varchar(50),
+    wfrom_DATEMonth varchar(20),
+    wfrom_DATEyear varchar(20), 
+	wto_DATEMonth varchar(20),
+    wto_DATEyear varchar(20), 
+    job_Description varchar(300),
+ PRIMARY KEY (first_name,last_name),
+    FOREIGN KEY (jobseeker_email) REFERENCES JobSeeker_login(email)
+ 
+);
+
+CREATE TABLE JobSeeker_Apply_Job (
+
+   job_apply_id int NOT NULL AUTO_INCREMENT,
+   add_To_Shortlist ENUM('False', 'True') DEFAULT 'False',
+    job_post_id int ,
+	jobseeker_email varchar(30),
+   PRIMARY KEY (job_apply_id),
+   FOREIGN KEY(job_post_id) REFERENCES Employer_Job_POST(job_post_id),
+   FOREIGN KEY (jobseeker_email)REFERENCES JobSeeker_Biodata(jobseeker_email)
+
+);
+
+
+
+
+
+ALTER TABLE JobSeeker_login ADD COLUMN email_verified ENUM('False', 'True') DEFAULT 'False';
+ALTER TABLE Employer_login ADD COLUMN email_verified ENUM('False', 'True') DEFAULT 'False';
+
+ALTER TABLE Employer_login DROP COLUMN phone;
+
+ALTER TABLE Employer_login ADD COLUMN phone BIGINT;
+
+
+
+
+
